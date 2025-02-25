@@ -66,9 +66,9 @@ app.post("/add", async (req, res) => {
   }
 });
 app.post("/user", async (req, res) => {
-  const result = await db.query(
+  /*const result = await db.query(
     "SELECT country_code FROM visited_countries JOIN users ON users.id = user_id;",
-    [input.toLowerCase()]
+    [input.toLowerCase()] */
   );
 });
 
