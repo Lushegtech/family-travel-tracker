@@ -25,7 +25,7 @@ let users = [
 ];
 
 async function checkVisisted() {
-  const result = await db.query("SELECT country_code FROM visited_countries JOIN users ON user.id WHERE user_id = $1;",
+  const result = await db.query("SELECT country_code FROM visited_countries JOIN users ON users.id = visited_countries.user_id WHERE user_id = $1;",
     [currentUserId]
   );
   let countries = [];
@@ -38,23 +38,17 @@ async function checkVisisted() {
 async function getCurrentUser() {
   const result = await db.query("SELECT * FROM users");
   users = result.rows;
-  return users.forEach(user => {
-    user.id == currentUserId;
-  });
-
-  //another way to write this is: 
-    //return users.find((user) => user.id == currentUserId);
-  
+  return users.find((user) => user.id == currentUserId);
 }
 
-app.get("/", async (req, res) => {
+app.get("/", async (_, res) => {
   const countries = await checkVisisted();
   const currentUser = await getCurrentUser();
   res.render("index.ejs", {
     countries: countries,
     total: countries.length,
     users: users,
-    color: currentUser.color,
+    color: currentUser.map_colour,
   });
 });
 
