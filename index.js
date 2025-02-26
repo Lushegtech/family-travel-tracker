@@ -84,16 +84,10 @@ app.post("/add", async (req, res) => {
 });
 
 app.post("/user", async (req, res) => {
-  try {
-    if (req.body.add === "new") {
-      res.render("new.ejs");
-    } else {
-      currentUserId = req.body.user;
-      res.redirect("/")
-  }
-  } catch(err) {
-    console.log(err);
-  }
+  const result = await db.query(
+    "SELECT country_code FROM visited_countries JOIN users ON users.id = user_id;",
+    [input.toLowerCase()]
+  );
 });
 
 app.post("/new", async (req, res) => {
