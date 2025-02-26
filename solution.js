@@ -39,7 +39,9 @@ async function checkVisisted() {
 async function getCurrentUser() {
   const result = await db.query("SELECT * FROM users");
   users = result.rows;
-  return users.find((user) => user.id == currentUserId);
+  return users.find((user) => user.id == currentUserId);//there's a reason triple equal sign wasn't used here, because it checks for the datatype of both id's and it must be equal to each other which might cause some issues. Though a double equal sign was used here, since it only check of this is equals to that and doesn't check for their datatypes.
+  console.log(typeof(user.id));
+  console.log(typeof(currentUserId)); //just in case it throws errors.
 }
 
 app.get("/", async (req, res) => {
@@ -52,6 +54,7 @@ app.get("/", async (req, res) => {
     color: currentUser.color,
   });
 });
+
 app.post("/add", async (req, res) => {
   const input = req.body["country"];
   const currentUser = await getCurrentUser();
